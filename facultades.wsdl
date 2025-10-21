@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions
+    name="FacultadesService"
+    targetNamespace="http://www.example.org/FacultadService/"
+    xmlns="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:tns="http://www.example.org/FacultadService/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+
+    <message name="getFacultadesRequest"/>
+    <message name="getFacultadesResponse">
+        <part name="facultades" element="tns:FacultadList"/>
+    </message>
+
+    <message name="getFacultadPorSiglaRequest">
+        <part name="sigla" type="xsd:string"/>
+    </message>
+    <message name="getFacultadPorSiglaResponse">
+        <part name="facultad" element="tns:Facultad"/>
+    </message>
+
+    <message name="getFacultadPorIdRequest">
+        <part name="id" type="xsd:int"/>
+    </message>
+    <message name="getFacultadPorIdResponse">
+        <part name="facultad" element="tns:Facultad"/>
+    </message>
+
+    <portType name="FacultadServicePortType">
+        <operation name="getFacultades">
+            <input message="tns:getFacultadesRequest"/>
+            <output message="tns:getFacultadesResponse"/>
+        </operation>
+        <operation name="getFacultadPorSigla">
+            <input message="tns:getFacultadPorSiglaRequest"/>
+            <output message="tns:getFacultadPorSiglaResponse"/>
+        </operation>
+        <operation name="getFacultadPorId">
+            <input message="tns:getFacultadPorIdRequest"/>
+            <output message="tns:getFacultadPorIdResponse"/>
+        </operation>
+    </portType>
+
+    <binding name="FacultadServiceBinding" type="tns:FacultadServicePortType">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="getFacultades">
+            <soap:operation soapAction="getFacultades"/>
+            <input><soap:body use="literal" namespace="http://www.example.org/FacultadService"/></input>
+            <output><soap:body use="literal" namespace="http://www.example.org/FacultadService"/></output>
+        </operation>
+        <operation name="getFacultadPorSigla">
+            <soap:operation soapAction="getFacultadPorSigla"/>
+            <input><soap:body use="literal" namespace="http://www.example.org/FacultadService"/></input>
+            <output><soap:body use="literal" namespace="http://www.example.org/FacultadService"/></output>
+        </operation>
+    </binding>
+
+    <service name="FacultadService">
+        <documentation>Servicio SOAP para obtener datos de facultades</documentation>
+        <port name="FacultadServicePort" binding="tns:FacultadServiceBinding">
+            <soap:address location="http://localhost:8000/wsdl"/>
+        </port>
+    </service>
+
+    <types>
+        <xsd:schema targetNamespace="http://www.example.org/FacultadService/">
+            <xsd:element name="Facultad">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="nombre" type="xsd:string"/>
+                        <xsd:element name="siglas" type="xsd:string"/>
+                        <xsd:element name="puntos" type="xsd:int"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="FacultadList">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="facultad" type="tns:Facultad" maxOccurs="unbounded"/>
+                    </xsd:sequence>                
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </types>
+
+</definitions>
+
+
